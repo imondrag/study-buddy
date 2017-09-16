@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 /**
  * A login screen that offers login via email/password.
@@ -337,6 +338,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 //intent.putExtra();
+                intent.putExtra("user_email", mEmail.toString());
+                intent.putExtra("user_name", "Bruh".toString());
                 startActivity(intent);
                 //finish();
             } else {
