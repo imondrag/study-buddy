@@ -1,9 +1,12 @@
 package com.vaia.studybuddy;
 
+//import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity
         nav_email.setText(mEmail);
 
         navigationView.setNavigationItemSelectedListener(this);
+        displayView(R.id.nav_courses);
     }
 
     @Override
@@ -89,27 +93,50 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+    public void displayView(int viewId) {
 
-        if (id == R.id.nav_map) {
-            // Handle the camera action
-            
-        } else if (id == R.id.nav_courses) {
+        Fragment fragment = null;
+        String title = getString(R.string.app_name);
 
-        } else if (id == R.id.nav_groups) {
+        switch (viewId) {
+            case R.id.nav_map:
+                fragment = new MapFragment();
+                title  = "Local Map";
+                break;
+            case R.id.nav_courses:
+                fragment = new CoursesFragment();
+                title = "Course List";
+                break;
+            case R.id.nav_groups:
+                fragment = new GroupsFragment();
+                title  = "Study Groups";
+                break;
+            case R.id.nav_study_now:
+                fragment = new StudyFragment();
+                title  = "Study Now";
+                break;
+        }
 
-        } else if (id == R.id.nav_study_now) {
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+        }
 
-        } else if (id == R.id.nav_share) {
-
+        // set the toolbar title
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        displayView(item.getItemId());
         return true;
     }
 }
